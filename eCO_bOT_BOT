@@ -1,0 +1,50 @@
+from typing import Optional
+import discord
+from discord.ext import commands
+import random
+intents = discord.Intents.default()
+intents.message_content = True
+
+bot = commands.Bot(command_prefix='&', intents=intents)
+#DICCIONARIO PREGUNTAS
+
+preguntas = {
+    "¿Dónde va este residuo: Caja de jugo limpia" : "Papel y cartón" ,
+    "¿Dónde va este residuo: Pedazo de fruta" : "Desechos orgánicos",
+    "¿Cuál de estas acciones cuida el ambiente?" : "Ahorrar agua",
+    "¿Cuál de estas acciones daña el ambiente?" : "Dejar basura en áreas públicas",
+    "¿Cuál de estos desechos es más dañino" : "Plástico"
+}
+opciones = {
+    1 : ["Papel y cartón", "Desechos peligrosos", "Envases metálicos y plásticos"],
+    2 : ["Desechos orgánicos", "Papel y cartón", "Vidrios"],
+    3 : ["Ahorrar agua", "Usar plásticos en empaques de comida", "Poner toda la basura en el mismo lugar"],
+    4 : ["Recoger basura", "Dejar basura en áreas públicas", "Reciclar los desechos conscientemente"],
+    5 : ["Plástico", "Vidrio", "Madera"]
+    
+
+}
+#COMANDOS
+@bot.event
+async def on_ready():
+    print(f'We have logged in as {bot.user}')
+
+@bot.command()
+async def intro(ctx):
+    await ctx.send(f'Hola, soy un bot {bot.user}! Te ayudaré e informaré sobre como podemos ayudar al medio ambiente :D')
+@bot.command()
+async def quiz(ctx):
+    count=0
+    print("Hola, te haré 3 preguntas aleatorias sobre como podemos cuidar el ambiente, te diré tus aciertos y corregiré tus errores :)")
+    print("EMPECEMOS >:D")
+    preguntas_aleatorias = random.sample(list(preguntas.items()), 3)
+    for preguntas, respuesta_correcta in preguntas_aleatorias:
+        print(random.choice(preguntas))
+        res=input("Cuál opción es la correcta?")
+        if res == respuesta_correcta[preguntas]:
+            print("CORRECTO")
+            count+=1
+        else:
+            print("INCORRECTO")
+        print("Completaste la actividad, cada día aprendemos más >:DDDDD")
+bot.run("TOKEN")
